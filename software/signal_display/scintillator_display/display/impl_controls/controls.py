@@ -13,7 +13,9 @@ from scintillator_display.display.impl_compatibility.data_manager import DataPoi
 
 
 class Controls:
-    def __init__(self, impl_a, impl_b, vm):
+    def __init__(self, impl_a, impl_b, vm, x_ratio=(0, 1, 5), y_ratio=(0, 1, 1)):
+
+        self.x_ratio, self.y_ratio = x_ratio, y_ratio
 
         self.vm = vm
 
@@ -63,19 +65,23 @@ class Controls:
         self.impls = [self.impl_a, self.impl_b]
 
 
-
-
-
-
-
-
+    def null(self, *args):
+        pass
     
-    def viewport_shenanigans(self, vm, ratio_num):
-        vp_controls = vm.add_viewport(None, None)
-        vm.set_vp_ratio(vp_controls, ratio_num)
-        vm.set_on_render(vp_controls, self.on_render)
-        vm.set_window_size_callback(vp_controls, self.window_size_callback)
+    def viewport_shenanigans(self, vm):
+        vp_c = vm.add_viewport(None, None)
 
+        vp_c.on_render = self.on_render
+
+        vp_c.window_size_callback = self.window_size_callback
+        
+        vp_c.mouse_button_callback = self.null
+        vp_c.cursor_pos_callback = self.null
+        vp_c.scroll_callback = self.null
+        vp_c.char_callback = self.null
+        vp_c.key_callback = self.null
+
+        vp_c.x_ratio, vp_c.y_ratio = self.x_ratio, self.y_ratio
 
     def window_size_callback(self, window, width, height):
         self.width, self.height = width, height
@@ -107,7 +113,8 @@ class Controls:
             " ",
             flags=imgui.WINDOW_NO_RESIZE
             | imgui.WINDOW_NO_MOVE
-            | imgui.WINDOW_NO_COLLAPSE,
+            | imgui.WINDOW_NO_COLLAPSE
+            | imgui.WINDOW_HORIZONTAL_SCROLLING_BAR # FIX SIZE SO IT IS ALWAYS SAME
         )
 
         imgui.separator()

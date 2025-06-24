@@ -29,7 +29,6 @@ class ViewportManager:
         self.window = self.create_window((self.width, self.height), "Scintillating Chamber")
 
         self.viewports: list[Viewport] = []
-        self.vp_count = 0
         self.vp_current = 0
 
         self.vp_focus = 0
@@ -48,7 +47,6 @@ class ViewportManager:
 
 
             for i, vp in enumerate(self.viewports):
-                #print(vp.xpos, vp.ypos, vp.width, vp.height)
                 glViewport(vp.xpos, vp.ypos, vp.width, vp.height)
                 glScissor(vp.xpos, vp.ypos, vp.width, vp.height)
                 vp.on_render(self.paused)
@@ -163,183 +161,40 @@ class ViewportManager:
         vp.char_callback(*args, **kwargs)
 
     def add_viewport(self, width, height):
-        vp_new = Viewport(self.vp_count)
+        vp_new = Viewport()
         self.viewports.append(vp_new)
-
-        self.vp_count += 1
-        self.vp_resize()
 
         return vp_new
     
     def vp_resize(self, vp_resize_callback=False):
-        total_ratio = 0
         for vp in self.viewports:
-            total_ratio += vp.ratio
 
-        ratio_width = self.width // total_ratio
-        ratio_current = 0
+            x_depth = self.width  * (vp.x_ratio[1]-vp.x_ratio[0])/vp.x_ratio[2]
+            y_depth = self.height * (vp.y_ratio[1]-vp.y_ratio[0])/vp.y_ratio[2]
 
-        self._intersect_regions = [0]
+            x_start = self.width * vp.x_ratio[0]/vp.x_ratio[2]
+            y_start = self.width * vp.y_ratio[0]/vp.y_ratio[2]
 
-        for i, vp in enumerate(self.viewports):
-            vp.xpos = ratio_current * ratio_width
-            vp.ypos = 0
-
-            vp.width = vp.ratio * ratio_width
-            vp.height = self.height
-
-            ratio_current += vp.ratio
-            self._intersect_regions.append(vp.xpos + vp.width)
-
+            vp.xpos   = int(x_start)
+            vp.ypos   = int(y_start)
+            vp.width  = int(x_depth)
+            vp.height = int(y_depth)
+        
             if vp_resize_callback:
                 vp.window_size_callback(vp, vp.width, vp.height)
     
     def vp_intersect(self, xpos, ypos):
-        if not len(self._intersect_regions):
-            self.vp_resize(vp_resize_callback=False)
-
-        for i, bound_min in enumerate(self._intersect_regions[:-1]):
-            bound_max = self._intersect_regions[i + 1]
-
-            if bound_min <= xpos < bound_max:
+        for i, vp in enumerate(self.viewports):
+            if (vp.xpos <= xpos <= vp.xpos+vp.width) and (vp.ypos <= ypos <= vp.ypos+vp.height):
                 return i
         return 0
 
-    def set_vp_ratio(self, vp, ratio):
-        vp_id = vp.idx
-        self.viewports[vp_id].ratio = ratio
-
-    def set_cursor_pos_callback(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].cursor_pos_callback = fn
-
-    def set_mouse_button_callback(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].mouse_button_callback = fn
-
-    def set_scroll_callback(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].scroll_callback = fn
-
-    def set_window_size_callback(self, vp,fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].window_size_callback = fn
-
-    def set_key_callback(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].key_callback = fn
-
-    def set_char_callback(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].char_callback = fn
-
-    def set_on_render(self, vp, fn):
-        vp_id = vp.idx
-        self.viewports[vp_id].on_render = fn
-
-
 class Viewport:
-    def __init__(self, idx):
-        self._idx = idx
-
+    def __init__(self):#, idx):
         self.xpos = None
         self.ypos = None
         self.width = None
         self.height = None
 
-        self._ratio = 1
-
-        self._cursor_pos_callback = None
-        self._mouse_button_callback = None
-        self._scroll_callback = None
-        self._window_size_callback = None
-        self._key_callback = None
-        self._char_callback = None
-
-        self._on_render = None
-
-    @property
-    def ratio(self):
-        return self._ratio
-    
-    @ratio.setter
-    def ratio(self, ratio):
-        self._ratio = ratio
-
-    @property
-    def idx(self):
-        return self._idx
-    
-    def null_callback(self, *args, **kwargs):
-        ...
-    
-    @property
-    def cursor_pos_callback(self):
-        if self._cursor_pos_callback:
-            return self._cursor_pos_callback
-
-        return self.null_callback
-
-    @cursor_pos_callback.setter
-    def cursor_pos_callback(self, fn):
-        self._cursor_pos_callback = fn
-
-    @property
-    def mouse_button_callback(self):
-        if self._mouse_button_callback:
-            return self._mouse_button_callback
-        return self.null_callback
-
-    @mouse_button_callback.setter
-    def mouse_button_callback(self, fn):
-        self._mouse_button_callback = fn
-
-    @property
-    def scroll_callback(self):
-        if self._scroll_callback:
-            return self._scroll_callback
-        return self.null_callback
-
-    @scroll_callback.setter
-    def scroll_callback(self, fn):
-        self._scroll_callback = fn
-
-    @property
-    def window_size_callback(self):
-        if self._window_size_callback:
-            return self._window_size_callback
-        return self.null_callback
-
-    @window_size_callback.setter
-    def window_size_callback(self, fn):
-        self._window_size_callback = fn
-
-    @property
-    def key_callback(self):
-        if self._key_callback:
-            return self._key_callback
-        return self.null_callback
-
-    @key_callback.setter
-    def key_callback(self, fn):
-        self._key_callback = fn
-
-    @property
-    def char_callback(self):
-        if self._char_callback:
-            return self._char_callback
-        return self.null_callback
-
-    @char_callback.setter
-    def char_callback(self, fn):
-        self._char_callback = fn
-
-    @property
-    def on_render(self):
-        if self._on_render:
-            return self._on_render
-        return self.null_callback
-
-    @on_render.setter
-    def on_render(self, fn):
-        self._on_render = fn
+        self.x_ratio = None
+        self.y_ratio = None

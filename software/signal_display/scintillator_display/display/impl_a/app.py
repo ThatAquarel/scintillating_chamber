@@ -25,7 +25,9 @@ from scintillator_display.compat.universal_values import MathDisplayValues
 
 
 class App(MathDisplayValues):
-    def __init__(self, init_mode=('data', 'debug', 'demo')):
+    def __init__(self, init_mode=('data', 'debug', 'demo'), x_ratio=(1, 3, 5), y_ratio=(0, 1, 1)):
+
+        self.x_ratio, self.y_ratio = x_ratio, y_ratio
 
         if init_mode not in ('data', 'debug', 'demo'):
             init_mode='debug'
@@ -67,15 +69,22 @@ class App(MathDisplayValues):
         self.show_colour = True
 
 
-    def viewport_shenanigans(self, vm, ratio_num):
-        vp_a = vm.add_viewport(None, None)
-        vm.set_mouse_button_callback(vp_a, self.mouse_button_callback)
-        vm.set_cursor_pos_callback(  vp_a, self.cursor_pos_callback)
-        vm.set_scroll_callback(      vp_a, self.scroll_callback)
-        vm.set_window_size_callback( vp_a, self.resize_callback)
+    def null(self, *args):
+        pass
 
-        vm.set_vp_ratio(vp_a, ratio_num)
-        vm.set_on_render(vp_a, self.on_render_frame)
+    def viewport_shenanigans(self, vm):
+        vp_a = vm.add_viewport(None, None)
+
+        vp_a.mouse_button_callback = self.mouse_button_callback
+        vp_a.cursor_pos_callback = self.cursor_pos_callback
+        vp_a.scroll_callback = self.scroll_callback
+        vp_a.window_size_callback = self.resize_callback
+
+        vp_a.char_callback = self.null
+        vp_a.key_callback = self.null
+
+        vp_a.x_ratio, vp_a.y_ratio = self.x_ratio, self.y_ratio
+        vp_a.on_render = self.on_render_frame
 
     
     def mouse_button_callback(self, window, button, action, mods):
