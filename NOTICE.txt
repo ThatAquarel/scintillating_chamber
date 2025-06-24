@@ -1,32 +1,30 @@
-Copyright (c) 2025, Tian Yi Xia and Aljoscha Michel Ziegler.
+Copyright (c) 2025, Tian Yi Xia, Aljoscha Michel Ziegler, and collaborators.  
 All rights reserved.
 
-This project was originally conceived and led by Tian Yi Xia,
-with substantial contributions from Aljoscha Michel Ziegler,
-Evan Parasol, Leandro Perez Moran, Andy Yu, and collaborators
-at Dawson High Energy Physics.
+This project was initiated and led by Tian Yi Xia, with major  
+contributions from Aljoscha Michel Ziegler, Evan Parasol,  
+Leandro Perez Moran, Andy Yu, and members of the Dawson  
+High Energy Physics team.
 
-All core system designs, including hardware architecture and
-implementation, were developed under the direction of the
-original author.
+The development of core system designs, including hardware  
+architecture and implementation, was collaboratively carried out,  
+with leadership from Tian Yi Xia and Aljoscha Michel Ziegler.
 
-This license explicitly applies to the entire source code
-history of this project, including all commits, files, and
-contributions starting from the very first commit and
-continuing through all subsequent revisions.
+This license applies to the entire history of this repository,  
+including all commits, contributions, and revisions, starting  
+from the initial commit.
 
-Unless otherwise explicitly licensed or granted in writing,
-all rights to intellectual property arising from this work,
-including but not limited to patentable inventions, are
-retained by Tian Yi Xia.
+Unless explicitly licensed or granted otherwise in writing,  
+all rights to intellectual property arising from this work, 
+including but not limited to source code, documentation,  
+and patentable inventions, are retained collectively by the
+named authors above. Requests for reuse or licensing of
+such rights should be directed to Tian Yi Xia, with acknowledgment
+of Aljoscha Michel Ziegler and all named contributors.
 
-Authorization for use of such rights must be requested through
-Tian Yi Xia and is subject to confirmation by both Tian Yi Xia
-and Aljoscha Michel Ziegler.
+We respectfully request that any derivative works or publications  
+provide proper attribution to the original authors and contributors  
+in line with academic and licensing norms.
 
-We respectfully request that any derivative works provide
-appropriate attribution to the original authors and
-contributors in accordance with the license terms.
-
-Date of initial publication: 2025-06-23
-
+Initial publication date: 2025-06-23  
+Last modified: 2025-06-24
