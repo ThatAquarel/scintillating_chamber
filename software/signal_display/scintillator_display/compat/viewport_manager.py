@@ -167,7 +167,7 @@ class ViewportManager:
         return vp_new
     
     def vp_resize(self, vp_resize_callback=False):
-        for vp in self.viewports:
+        for i, vp in enumerate(self.viewports):
 
             x_depth = self.width  * (vp.x_ratio[1]-vp.x_ratio[0])/vp.x_ratio[2]
             y_depth = self.height * (vp.y_ratio[1]-vp.y_ratio[0])/vp.y_ratio[2]
@@ -177,7 +177,10 @@ class ViewportManager:
 
             vp.xpos   = int(x_start)
             vp.ypos   = int(y_start)
-            vp.width  = int(x_depth)
+            if i ==0:
+                vp.width  = int(x_depth)# if int(x_depth) > 200 else 200
+            else:
+                vp.width = int(x_depth)
             vp.height = int(y_depth)
         
             if vp_resize_callback:
