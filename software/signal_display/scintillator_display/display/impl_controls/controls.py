@@ -84,8 +84,7 @@ class Controls:
         vp_c.x_ratio, vp_c.y_ratio = self.x_ratio, self.y_ratio
 
     def window_size_callback(self, window, width, height):
-        self.width = width# if width > 256 else 256
-        self.height = height
+        self.width, self.height = width, height
 
     def activate_data_connection(self, impl_a, impl_b):
         self.impl_a, self.impl_b = impl_a, impl_b
@@ -115,9 +114,7 @@ class Controls:
             flags=imgui.WINDOW_NO_RESIZE
             | imgui.WINDOW_NO_MOVE
             | imgui.WINDOW_NO_COLLAPSE
-            | imgui.WINDOW_HORIZONTAL_SCROLLING_BAR
-            | imgui.TABLE_COLUMN_NO_CLIP # FIX SIZE SO IT IS ALWAYS SAME
-            | imgui.TABLE_NO_CLIP # FIX SIZE SO IT IS ALWAYS SAME
+            | imgui.WINDOW_HORIZONTAL_SCROLLING_BAR # FIX SIZE SO IT IS ALWAYS SAME
         )
 
         imgui.separator()
@@ -231,10 +228,7 @@ class Controls:
         num_columns = 3
         num_rows = 5
 
-        with imgui.begin_table("test", num_columns,
-                                imgui.TABLE_BORDERS_INNER_VERTICAL
-                               |imgui.TABLE_NO_KEEP_COLUMNS_VISIBLE
-                               |imgui.TABLE_NO_CLIP):
+        with imgui.begin_table("test", num_columns, imgui.TABLE_BORDERS_INNER_VERTICAL):
             imgui.table_setup_column("item", imgui.TABLE_COLUMN_WIDTH_FIXED)
             imgui.table_setup_column("a", imgui.TABLE_COLUMN_WIDTH_FIXED)
             imgui.table_setup_column("b", imgui.TABLE_COLUMN_WIDTH_FIXED)
@@ -348,17 +342,10 @@ class Controls:
         if table_height != 0:
             imgui.text("shown data points")
             imgui.separator()
-        with imgui.begin_table("data_points", len(header), 
-                                imgui.TABLE_BORDERS_INNER_VERTICAL
-                               |imgui.TABLE_NO_KEEP_COLUMNS_VISIBLE
-                               |imgui.TABLE_NO_CLIP):
-            #imgui.table_setup_column("d_a",  imgui.TABLE_COLUMN_WIDTH_STRETCH)
-            #imgui.table_setup_column("ip_b", imgui.TABLE_COLUMN_WIDTH_STRETCH)
-            #imgui.table_setup_column("d_b",  imgui.TABLE_COLUMN_WIDTH_STRETCH)
-            #imgui.table_setup_column("ip_b", imgui.TABLE_COLUMN_WIDTH_STRETCH)
-            imgui.table_setup_column("d_a",  imgui.TABLE_COLUMN_WIDTH_FIXED)
+        with imgui.begin_table("data_points", len(header), imgui.TABLE_BORDERS_INNER_VERTICAL):
+            imgui.table_setup_column("d_a", imgui.TABLE_COLUMN_WIDTH_FIXED)
             imgui.table_setup_column("ip_b", imgui.TABLE_COLUMN_WIDTH_FIXED)
-            imgui.table_setup_column("d_b",  imgui.TABLE_COLUMN_WIDTH_FIXED)
+            imgui.table_setup_column("d_b", imgui.TABLE_COLUMN_WIDTH_FIXED)
             imgui.table_setup_column("ip_b", imgui.TABLE_COLUMN_WIDTH_FIXED)
             for r in range(table_height):
                 imgui.table_next_row()
