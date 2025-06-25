@@ -295,6 +295,7 @@ class ConvexHullDetection(MathDisplayValues):
         :param scintillators: tuple containing two lists, one for each side view
         :return bounds: tuple containing two lists each containing the points that bound the muon path
         '''
+        self.n
 
         x_view = scintillators[0]
         z_view = scintillators[1]
