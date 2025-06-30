@@ -249,7 +249,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "acquisition.kicad_pro",
+    "filename": "digital.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -409,20 +409,20 @@
   },
   "sheets": [
     [
-      "c795f73b-1a64-4fc3-9fd4-1a337042370e",
+      "4c5c7ce5-09d6-4a32-b2a0-f32b0c47f27d",
       "Root"
     ],
     [
-      "4dec3130-2952-4e24-88ec-e62a92acf47a",
-      "Power"
-    ],
-    [
-      "98ae955d-4cfe-4b68-9323-185e5e699d13",
-      "MCU"
-    ],
-    [
-      "a4d3eaa7-26f0-4a06-bbea-9b959f012a8b",
+      "5a0bf45b-8051-4130-a070-b09b8e450297",
       "FPGA"
+    ],
+    [
+      "cd76c381-0dc6-471f-8cb4-588b98dd6605",
+      "Converters 1"
+    ],
+    [
+      "f97c1af4-8728-4c07-86fa-29999832a86b",
+      "Converters 2"
     ]
   ],
   "text_variables": {}
